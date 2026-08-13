@@ -25,8 +25,10 @@ function JsonLd() {
     telephone: "+55-41-99822-4539",
     address: {
       "@type": "PostalAddress",
+      streetAddress: "R. Barão do Rio Branco, 63 - Sala 1904 - Centro",
       addressLocality: "Curitiba",
       addressRegion: "PR",
+      postalCode: "80010-180",
       addressCountry: "BR",
     },
     sameAs: [VGD.brand.instagram, VGD.brand.facebook],

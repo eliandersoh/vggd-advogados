@@ -646,7 +646,7 @@ export function Contact() {
               </div>
               <div className="ci-row">
                 <div className="ci-label">Endereço</div>
-                <div className="ci-val">Curitiba — Paraná, Brasil</div>
+                <div className="ci-val">{VGD.brand.address}</div>
               </div>
               <div className="ci-row">
                 <div className="ci-label">Horário</div>

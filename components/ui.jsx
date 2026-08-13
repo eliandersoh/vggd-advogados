@@ -215,79 +215,111 @@ export function Effects() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Stagger indexing */
-    document.querySelectorAll("[data-stagger]").forEach(container => {
-      const stagger = container.dataset.stagger || "80";
-      container.style.setProperty("--stagger", stagger + "ms");
-      Array.from(container.children).forEach((child, i) => {
-        child.style.setProperty("--ri", i);
-      });
-    });
-
     /* Scroll reveal */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add("in");
+          /* mark as revealed so we can restore `in` after React re-renders */
+          e.target.dataset.revealIn = "1";
           io.unobserve(e.target);
         }
       });
     }, { threshold: 0.08, rootMargin: "0px 0px -10% 0px" });
 
-    document.querySelectorAll(".reveal, .reveal-display").forEach(el => {
-      if (!el.classList.contains("in")) io.observe(el);
-    });
-
-    /* Magnetic buttons (subtle) */
-    const magnetCleanups = [];
-    if (!reduce) {
+    /* Magnetic buttons (subtle) — guarded so re-runs don't duplicate listeners */
+    const initMagnetic = () => {
+      if (reduce) return;
       document.querySelectorAll("[data-magnet], .btn-primary").forEach(el => {
+        if (el.dataset.magnetInit) return;
+        el.dataset.magnetInit = "1";
         const strength = 0.25;
-        const onMove = (ev) => {
+        el.addEventListener("mousemove", (ev) => {
           const r = el.getBoundingClientRect();
           const x = (ev.clientX - r.left - r.width / 2) * strength;
           const y = (ev.clientY - r.top - r.height / 2) * strength;
           el.style.transform = `translate(${x}px, ${y}px)`;
-        };
-        const onLeave = () => { el.style.transform = ""; };
-        el.addEventListener("mousemove", onMove);
-        el.addEventListener("mouseleave", onLeave);
-        magnetCleanups.push(() => {
-          el.removeEventListener("mousemove", onMove);
-          el.removeEventListener("mouseleave", onLeave);
+        });
+        el.addEventListener("mouseleave", () => { el.style.transform = ""; });
+      });
+    };
+
+    /* Index stagger children + observe every reveal element (idempotent) */
+    const observeAll = () => {
+      document.querySelectorAll("[data-stagger]").forEach(container => {
+        const stagger = container.dataset.stagger || "80";
+        container.style.setProperty("--stagger", stagger + "ms");
+        Array.from(container.children).forEach((child, i) => {
+          child.style.setProperty("--ri", i);
         });
       });
-    }
+      document.querySelectorAll(".reveal, .reveal-display").forEach(el => {
+        if (el.dataset.revealIn === "1") {
+          el.classList.add("in");
+        } else if (!el.classList.contains("in") && !el.dataset.revealObs) {
+          el.dataset.revealObs = "1";
+          io.observe(el);
+        }
+      });
+      initMagnetic();
+    };
+
+    observeAll();
+
+    /* React re-renders rewrite className (dropping `in`) and mount new nodes
+       (tab panels, carousel slides). Watch the DOM and (a) restore `in` on
+       already-revealed elements, (b) wire up anything new. */
+    let scheduled = false;
+    const mo = new MutationObserver((muts) => {
+      let needsSweep = false;
+      muts.forEach(m => {
+        if (m.type === "attributes") {
+          const el = m.target;
+          if (el.dataset && el.dataset.revealIn === "1" && !el.classList.contains("in")) {
+            el.classList.add("in");
+          }
+        } else if (m.type === "childList" && m.addedNodes.length) {
+          needsSweep = true;
+        }
+      });
+      if (needsSweep && !scheduled) {
+        scheduled = true;
+        requestAnimationFrame(() => { scheduled = false; observeAll(); });
+      }
+    });
+    mo.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     /* Subtle parallax on [data-parallax] elements */
     let onScroll = null;
     if (!reduce) {
-      const els = document.querySelectorAll("[data-parallax]");
-      if (els.length) {
-        let ticking = false;
-        const update = () => {
-          els.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const vh = window.innerHeight;
-            if (rect.bottom < 0 || rect.top > vh) return;
-            const progress = (vh - rect.top) / (vh + rect.height); // 0..1
-            const speed = parseFloat(el.dataset.parallax) || 0.15;
-            const y = (progress - 0.5) * speed * 100;
-            el.style.setProperty("--py", y.toFixed(2) + "px");
-          });
-          ticking = false;
-        };
-        onScroll = () => {
-          if (!ticking) { requestAnimationFrame(update); ticking = true; }
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        update();
-      }
+      let ticking = false;
+      const update = () => {
+        document.querySelectorAll("[data-parallax]").forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const vh = window.innerHeight;
+          if (rect.bottom < 0 || rect.top > vh) return;
+          const progress = (vh - rect.top) / (vh + rect.height); // 0..1
+          const speed = parseFloat(el.dataset.parallax) || 0.15;
+          const y = (progress - 0.5) * speed * 100;
+          el.style.setProperty("--py", y.toFixed(2) + "px");
+        });
+        ticking = false;
+      };
+      onScroll = () => {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      update();
     }
 
     return () => {
       io.disconnect();
-      magnetCleanups.forEach(fn => fn());
+      mo.disconnect();
       if (onScroll) window.removeEventListener("scroll", onScroll);
     };
   }, []);

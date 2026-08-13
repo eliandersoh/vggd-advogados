@@ -98,10 +98,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR">
-      <body className={`${fraunces.variable} ${inter.variable} ${instrument.variable}`}>
-        {children}
-      </body>
+    <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable} ${instrument.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

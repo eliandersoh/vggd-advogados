@@ -210,6 +210,75 @@ export function WhatsAppFloat() {
   );
 }
 
+/* ———————— Seletor de teste de fotos (temporário) ———————— */
+
+const PHOTO_VARIANTS = [
+  { id: "atual", label: "Atuais" },
+  { id: "mesa", label: "Mesa" },
+  { id: "marrom", label: "Fundo marrom" },
+];
+
+export function usePhotoVariant() {
+  const [variant, setVariant] = useState("atual");
+  useEffect(() => {
+    const stored = window.localStorage.getItem("photoVariant");
+    if (stored && PHOTO_VARIANTS.some(v => v.id === stored)) setVariant(stored);
+    const onChange = (e) => setVariant(e.detail);
+    window.addEventListener("photo:variant", onChange);
+    return () => window.removeEventListener("photo:variant", onChange);
+  }, []);
+  return variant;
+}
+
+export function PhotoVariantPicker() {
+  const variant = usePhotoVariant();
+  const pick = (id) => {
+    window.localStorage.setItem("photoVariant", id);
+    window.dispatchEvent(new CustomEvent("photo:variant", { detail: id }));
+  };
+
+  return (
+    <div className="pv-picker" role="group" aria-label="Teste de fotos da equipe">
+      <span className="pv-label">Fotos:</span>
+      {PHOTO_VARIANTS.map(v => (
+        <button
+          key={v.id}
+          className={`pv-opt ${variant === v.id ? "active" : ""}`}
+          onClick={() => pick(v.id)}
+        >
+          {v.label}
+        </button>
+      ))}
+      <a className="pv-goto" href="#equipe">ver equipe ↓</a>
+      <style>{`
+        .pv-picker {
+          position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+          z-index: 60;
+          display: flex; align-items: center; gap: 6px;
+          background: var(--ink); color: var(--cream);
+          padding: 8px 14px; border-radius: 0 0 12px 12px;
+          font-size: 12px;
+          box-shadow: 0 12px 32px rgba(0,0,0,.25);
+        }
+        .pv-label { opacity: .6; text-transform: uppercase; letter-spacing: .1em; font-size: 10px; }
+        .pv-opt {
+          padding: 5px 12px; border-radius: 999px;
+          background: rgba(255,255,255,0.08);
+          font-size: 12px; transition: all .2s;
+          border: 1px solid transparent;
+        }
+        .pv-opt:hover { background: rgba(255,255,255,0.16); }
+        .pv-opt.active { background: var(--gold-soft); color: var(--ink); font-weight: 500; }
+        .pv-goto { font-size: 11px; opacity: .7; margin-left: 6px; }
+        .pv-goto:hover { opacity: 1; color: var(--gold-soft); }
+        @media (max-width: 560px) {
+          .pv-picker { width: 100%; border-radius: 0; justify-content: center; flex-wrap: wrap; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 /* ———————— Scroll effects (reveal / stagger / magnetic / parallax) ———————— */
 export function Effects() {
   useEffect(() => {

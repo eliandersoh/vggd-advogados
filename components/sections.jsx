@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { VGD } from "@/lib/data";
-import { Arrow, Star, Logo, SectionHead, Portrait } from "./ui";
+import { Arrow, Star, Logo, SectionHead, Portrait, usePhotoVariant } from "./ui";
 
 /* ============ HERO ============ */
 export function Hero() {
@@ -300,6 +300,12 @@ export function Areas() {
 
 /* ============ EQUIPE ============ */
 export function Team() {
+  const variant = usePhotoVariant();
+  const photoFor = (p) =>
+    variant === "mesa" ? p.photoMesa || p.photo
+    : variant === "marrom" ? p.photoMarrom || p.photo
+    : p.photo;
+
   return (
     <section id="equipe" className="sec team">
       <div className="container">
@@ -312,7 +318,13 @@ export function Team() {
         <div className="team-grid" data-stagger="100">
           {VGD.team.map((p) => (
             <article key={p.slug} className="tm-card reveal reveal-up">
-              <Portrait label={p.portrait} photo={p.photo} objectPosition={p.pos} zoom={p.zoom} transformOrigin={p.origin} />
+              <Portrait
+                label={p.portrait}
+                photo={photoFor(p)}
+                objectPosition={variant === "atual" ? p.pos : "center top"}
+                zoom={variant === "atual" ? p.zoom : undefined}
+                transformOrigin={variant === "atual" ? p.origin : undefined}
+              />
               <div className="tm-badge">{p.role.split(" — ")[1]}</div>
               <div className="tm-body">
                 <h4 className="display tm-name">{p.name}</h4>

@@ -1,5 +1,5 @@
 import { VGD } from "@/lib/data";
-import { Nav, WhatsAppFloat, Effects } from "@/components/ui";
+import { Nav, WhatsAppFloat, Effects, PhotoVariantPicker } from "@/components/ui";
 import {
   Hero,
   About,
@@ -62,6 +62,7 @@ export default function Home() {
   return (
     <>
       <JsonLd />
+      <PhotoVariantPicker />
       <Nav />
       <main>
         <Hero />

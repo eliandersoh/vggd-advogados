@@ -22,7 +22,7 @@ const instrument = Instrument_Serif({
   display: "swap",
 });
 
-const SITE_URL = "https://vggdadvogados.com.br";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

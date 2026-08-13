@@ -1,4 +1,5 @@
 import { VGD } from "@/lib/data";
+import { SITE_URL } from "@/lib/site";
 import { Nav, WhatsAppFloat, Effects } from "@/components/ui";
 import {
   Hero,
@@ -20,7 +21,7 @@ function JsonLd() {
     alternateName: VGD.brand.full,
     description:
       "Escritório de advocacia em Curitiba (PR) com atuação em Direito de Família e Sucessões, Previdenciário, Trabalhista e Cível/Médico. Atendimento on-line em todo o Brasil.",
-    url: "https://vggdadvogados.com.br",
+    url: SITE_URL,
     email: VGD.brand.email,
     telephone: "+55-41-99822-4539",
     address: {

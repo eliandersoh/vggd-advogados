@@ -214,7 +214,31 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   transition: transform .25s;
 }
 .wa-float:hover { transform: scale(1.08); }
-.wa-float svg { width: 28px; height: 28px; }
+.wa-float svg { width: 28px; height: 28px; animation: waWiggle 6s ease-in-out infinite; }
+
+/* halo pulsante */
+.wa-float::before {
+  content: ""; position: absolute; inset: 0;
+  border-radius: 50%; background: #25D366;
+  z-index: -1;
+  animation: waPulse 2.6s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes waPulse {
+  0%   { transform: scale(1); opacity: .45; }
+  70%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+/* balançadinha periódica do ícone */
+@keyframes waWiggle {
+  0%, 84%, 100% { transform: rotate(0); }
+  88% { transform: rotate(-12deg); }
+  92% { transform: rotate(9deg); }
+  96% { transform: rotate(-4deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-float::before { animation: none; display: none; }
+  .wa-float svg { animation: none; }
+}
 
 /* ——— Teal accent on the top (nav + hero) ——— */
 #top.hero {

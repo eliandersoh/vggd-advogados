@@ -190,7 +190,7 @@ export function About() {
         .av-desc { font-size: 15px; color: var(--slate); line-height: 1.7; }
 
         @media (max-width: 900px) {
-          .sec { padding: 80px 0; }
+          .sec { padding: 40px 0; }
           .about-grid { grid-template-columns: 1fr; gap: 32px; }
           .av-row { grid-template-columns: 1fr; gap: 6px; }
         }

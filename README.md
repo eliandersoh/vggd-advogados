@@ -42,4 +42,4 @@ As fotos e logos estão em `public/assets/`. As fotos foram otimizadas para web 
 - `prefers-reduced-motion` respeitado em todas as animações
 - Headers de segurança (nosniff, frame-options, referrer-policy, permissions-policy)
 
-> O domínio configurado é `https://vgdadvogados.com.br` — ajuste `SITE_URL` em `app/layout.jsx` e as URLs em `app/sitemap.js`/`app/robots.js` se o domínio final for outro.
+> O domínio configurado é `https://vggdadvogados.com.br` — ajuste `SITE_URL` em `app/layout.jsx` e as URLs em `app/sitemap.js`/`app/robots.js` se o domínio final for outro.

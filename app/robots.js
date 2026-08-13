@@ -4,6 +4,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://vgdadvogados.com.br/sitemap.xml",
+    sitemap: "https://vggdadvogados.com.br/sitemap.xml",
   };
 }

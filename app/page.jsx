@@ -20,7 +20,7 @@ function JsonLd() {
     alternateName: VGD.brand.full,
     description:
       "Escritório de advocacia em Curitiba (PR) com atuação em Direito de Família e Sucessões, Previdenciário, Trabalhista e Cível/Médico. Atendimento on-line em todo o Brasil.",
-    url: "https://vgdadvogados.com.br",
+    url: "https://vggdadvogados.com.br",
     email: VGD.brand.email,
     telephone: "+55-41-99822-4539",
     address: {
@@ -39,7 +39,7 @@ function JsonLd() {
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "5.0",
-      reviewCount: "31",
+      reviewCount: "56",
     },
     employee: VGD.team.map((p) => ({
       "@type": "Person",

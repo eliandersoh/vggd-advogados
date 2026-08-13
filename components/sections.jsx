@@ -478,14 +478,14 @@ export function Testimonials() {
                 </svg>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 500 }}>Google</div>
-                  <div style={{ fontSize: 11, color: "var(--slate-muted)" }}>31 avaliações verificadas</div>
+                  <div style={{ fontSize: 11, color: "var(--slate-muted)" }}>56 avaliações verificadas</div>
                 </div>
               </div>
               <div className="tst-score display">5,0</div>
               <div className="tst-stars tst-stars-lg">
                 {[...Array(5)].map((_, k) => <Star key={k} />)}
               </div>
-              <a className="tst-g-link" href="https://www.google.com/search?q=VGD+Advogados+Curitiba" target="_blank" rel="noopener noreferrer">
+              <a className="tst-g-link" href="https://www.google.com/search?q=VGGD+Advogados+Curitiba" target="_blank" rel="noopener noreferrer">
                 Ver todas as avaliações <Arrow />
               </a>
             </div>

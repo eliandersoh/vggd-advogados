@@ -7,7 +7,6 @@ import {
   Areas,
   Process,
   Testimonials,
-  Faq,
   Contact,
   Footer,
 } from "@/components/sections";
@@ -51,27 +50,11 @@ function JsonLd() {
     areaServed: "BR",
   };
 
-  const faqData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: VGD.faq.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
   );
 }
 
@@ -87,7 +70,6 @@ export default function Home() {
         <Areas />
         <Process />
         <Testimonials />
-        <Faq />
         <Contact />
       </main>
       <Footer />

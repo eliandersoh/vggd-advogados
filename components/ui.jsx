@@ -3,6 +3,7 @@
 /* ———————— Reusable components ———————— */
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { VGD } from "@/lib/data";
 
 /* Small arrow */
@@ -153,11 +154,13 @@ export function Portrait({ label, aspect = "3/4", style, tone, photo, objectPosi
   if (photo) {
     return (
       <div className="portrait-photo" style={{ aspectRatio: aspect, ...style }}>
-        <img
+        <Image
           src={photo}
           alt={label}
-          loading="lazy"
+          fill
+          sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 25vw"
           style={{
+            objectFit: "cover",
             objectPosition: objectPosition || "center top",
             transform: zoom ? `scale(${zoom})` : undefined,
             transformOrigin: transformOrigin || "center top",
@@ -167,10 +170,6 @@ export function Portrait({ label, aspect = "3/4", style, tone, photo, objectPosi
           .portrait-photo {
             border-radius: 2px; overflow: hidden; background-color: #D9D1C3;
             position: relative;
-          }
-          .portrait-photo img {
-            width: 100%; height: 100%; object-fit: cover;
-            display: block;
           }
         `}</style>
       </div>
@@ -207,75 +206,6 @@ export function WhatsAppFloat() {
     <a className="wa-float" href={VGD.brand.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.11 3.23 5.12 4.53.71.31 1.27.49 1.71.63.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z M12 2a10 10 0 00-8.5 15.23L2 22l4.92-1.46A10 10 0 1012 2zm0 18.15a8.13 8.13 0 01-4.14-1.13l-.3-.18-3.07.8.82-2.99-.19-.31A8.15 8.15 0 1120.15 12 8.15 8.15 0 0112 20.15z"/></svg>
     </a>
-  );
-}
-
-/* ———————— Seletor de teste de fotos (temporário) ———————— */
-
-const PHOTO_VARIANTS = [
-  { id: "atual", label: "Atuais" },
-  { id: "mesa", label: "Mesa" },
-  { id: "marrom", label: "Fundo marrom" },
-];
-
-export function usePhotoVariant() {
-  const [variant, setVariant] = useState("atual");
-  useEffect(() => {
-    const stored = window.localStorage.getItem("photoVariant");
-    if (stored && PHOTO_VARIANTS.some(v => v.id === stored)) setVariant(stored);
-    const onChange = (e) => setVariant(e.detail);
-    window.addEventListener("photo:variant", onChange);
-    return () => window.removeEventListener("photo:variant", onChange);
-  }, []);
-  return variant;
-}
-
-export function PhotoVariantPicker() {
-  const variant = usePhotoVariant();
-  const pick = (id) => {
-    window.localStorage.setItem("photoVariant", id);
-    window.dispatchEvent(new CustomEvent("photo:variant", { detail: id }));
-  };
-
-  return (
-    <div className="pv-picker" role="group" aria-label="Teste de fotos da equipe">
-      <span className="pv-label">Fotos:</span>
-      {PHOTO_VARIANTS.map(v => (
-        <button
-          key={v.id}
-          className={`pv-opt ${variant === v.id ? "active" : ""}`}
-          onClick={() => pick(v.id)}
-        >
-          {v.label}
-        </button>
-      ))}
-      <a className="pv-goto" href="#equipe">ver equipe ↓</a>
-      <style>{`
-        .pv-picker {
-          position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-          z-index: 60;
-          display: flex; align-items: center; gap: 6px;
-          background: var(--ink); color: var(--cream);
-          padding: 8px 14px; border-radius: 0 0 12px 12px;
-          font-size: 12px;
-          box-shadow: 0 12px 32px rgba(0,0,0,.25);
-        }
-        .pv-label { opacity: .6; text-transform: uppercase; letter-spacing: .1em; font-size: 10px; }
-        .pv-opt {
-          padding: 5px 12px; border-radius: 999px;
-          background: rgba(255,255,255,0.08);
-          font-size: 12px; transition: all .2s;
-          border: 1px solid transparent;
-        }
-        .pv-opt:hover { background: rgba(255,255,255,0.16); }
-        .pv-opt.active { background: var(--gold-soft); color: var(--ink); font-weight: 500; }
-        .pv-goto { font-size: 11px; opacity: .7; margin-left: 6px; }
-        .pv-goto:hover { opacity: 1; color: var(--gold-soft); }
-        @media (max-width: 560px) {
-          .pv-picker { width: 100%; border-radius: 0; justify-content: center; flex-wrap: wrap; }
-        }
-      `}</style>
-    </div>
   );
 }
 
@@ -390,6 +320,10 @@ export function Effects() {
       io.disconnect();
       mo.disconnect();
       if (onScroll) window.removeEventListener("scroll", onScroll);
+      /* allow re-observation if the effect re-runs (React Strict Mode remount) */
+      document.querySelectorAll("[data-reveal-obs]").forEach(el => {
+        delete el.dataset.revealObs;
+      });
     };
   }, []);
 

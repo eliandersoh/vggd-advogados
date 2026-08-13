@@ -3,8 +3,9 @@
 /* ———————— Sections ———————— */
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { VGD } from "@/lib/data";
-import { Arrow, Star, Logo, SectionHead, Portrait, usePhotoVariant } from "./ui";
+import { Arrow, Star, Logo, SectionHead, Portrait } from "./ui";
 
 /* ============ HERO ============ */
 export function Hero() {
@@ -150,7 +151,13 @@ export function About() {
         <div className="about-grid">
           <div className="about-left reveal reveal-left">
             <div className="about-img" style={{ aspectRatio: "4/5" }}>
-              <img src="/assets/equipe-grupo.jpg" alt="Equipe VGGD Advogados" loading="lazy" />
+              <Image
+                src="/assets/equipe-grupo.jpg"
+                alt="Equipe VGGD Advogados"
+                fill
+                sizes="(max-width: 900px) 100vw, 40vw"
+                style={{ objectFit: "cover", objectPosition: "center 30%" }}
+              />
             </div>
           </div>
           <div className="about-right reveal reveal-right">
@@ -175,8 +182,7 @@ export function About() {
       <style>{`
         .sec { padding: 48px 0; }
         .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 72px; align-items: center; }
-        .about-img { border-radius: 2px; background-color: #D9D1C3; overflow: hidden; }
-        .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+        .about-img { border-radius: 2px; background-color: #D9D1C3; overflow: hidden; position: relative; }
         .about-values { display: flex; flex-direction: column; }
         .av-row { display: grid; grid-template-columns: 220px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--line); }
         .av-row:last-child { border-bottom: 1px solid var(--line); }
@@ -300,12 +306,6 @@ export function Areas() {
 
 /* ============ EQUIPE ============ */
 export function Team() {
-  const variant = usePhotoVariant();
-  const photoFor = (p) =>
-    variant === "mesa" ? p.photoMesa || p.photo
-    : variant === "marrom" ? p.photoMarrom || p.photo
-    : p.photo;
-
   return (
     <section id="equipe" className="sec team">
       <div className="container">
@@ -318,13 +318,7 @@ export function Team() {
         <div className="team-grid" data-stagger="100">
           {VGD.team.map((p) => (
             <article key={p.slug} className="tm-card reveal reveal-up">
-              <Portrait
-                label={p.portrait}
-                photo={photoFor(p)}
-                objectPosition={variant === "atual" ? p.pos : "center top"}
-                zoom={variant === "atual" ? p.zoom : undefined}
-                transformOrigin={variant === "atual" ? p.origin : undefined}
-              />
+              <Portrait label={p.portrait} photo={p.photo} />
               <div className="tm-badge">{p.role.split(" — ")[1]}</div>
               <div className="tm-body">
                 <h4 className="display tm-name">{p.name}</h4>

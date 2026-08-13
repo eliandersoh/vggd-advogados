@@ -56,7 +56,7 @@ export const metadata = {
       "Advocacia humanizada, para resultados que alcancem objetivos e mudem vidas. Família e Sucessões, Previdenciário, Trabalhista e Cível/Médico.",
     images: [
       {
-        url: "/assets/equipe-grupo.jpg",
+        url: "/assets/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Equipe VGGD Advogados",
@@ -68,7 +68,7 @@ export const metadata = {
     title: "VGGD Advogados — Advocacia humanizada em Curitiba (PR)",
     description:
       "Família e Sucessões, Previdenciário, Trabalhista e Cível/Médico. Atendimento on-line em todo o Brasil.",
-    images: ["/assets/equipe-grupo.jpg"],
+    images: ["/assets/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -98,7 +98,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable} ${instrument.variable}`}>
+    <html
+      lang="pt-BR"
+      data-scroll-behavior="smooth"
+      className={`${fraunces.variable} ${inter.variable} ${instrument.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

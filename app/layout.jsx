@@ -80,10 +80,6 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: "/assets/mark-teal.png",
-    apple: "/assets/mark-teal.png",
-  },
   formatDetection: {
     telephone: true,
     email: true,

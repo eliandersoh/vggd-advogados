@@ -10,8 +10,13 @@ export default function manifest() {
     theme_color: "#126579",
     icons: [
       {
-        src: "/assets/mark-teal.png",
+        src: "/icon.svg",
         sizes: "any",
+        type: "image/svg+xml",
+      },
+      {
+        src: "/apple-icon.png",
+        sizes: "180x180",
         type: "image/png",
       },
     ],

@@ -18,23 +18,9 @@ npm run build
 npm start
 ```
 
-## ⚠️ Imagens (obrigatório antes do deploy)
+## Imagens
 
-As fotos e logos **não estão incluídas no repositório**. Copie os arquivos do projeto de design (Claude Design → pasta `assets/`) para `public/assets/`:
-
-```
-public/assets/
-├── equipe-grupo.jpg      # foto da equipe (seção "O escritório" + Open Graph)
-├── jamili.jpg            # retratos dos sócios
-├── luan.jpg
-├── flavia.jpg
-├── guilherme.jpg
-├── logo-lockup-white.png # logo do header (sobre o hero teal)
-├── logo-lockup-teal.png  # logo do footer
-└── mark-teal.png         # favicon / ícone PWA
-```
-
-Enquanto as imagens não existirem, o site funciona normalmente — apenas os retratos/logos aparecem quebrados.
+As fotos e logos estão em `public/assets/`. As fotos foram otimizadas para web (máx. 1600px, JPEG ~78% de qualidade).
 
 ## Estrutura
 

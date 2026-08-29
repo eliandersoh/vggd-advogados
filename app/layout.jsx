@@ -53,7 +53,7 @@ export const metadata = {
     siteName: "VGGD Advogados",
     title: "VGGD Advogados — Advocacia humanizada em Curitiba (PR)",
     description:
-      "Advocacia humanizada, para resultados que alcancem objetivos e mudem vidas. Família e Sucessões, Previdenciário, Trabalhista e Cível/Médico.",
+      "Uma advocacia técnica, humana e comprometida com cada caso. Família e Sucessões, Trabalhista, Previdenciário e Cível/Médico.",
     images: [
       {
         url: "/assets/og-image.jpg",

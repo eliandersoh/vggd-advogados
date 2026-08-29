@@ -26,7 +26,7 @@ function JsonLd() {
     telephone: "+55-41-99822-4539",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "R. Barão do Rio Branco, 63 - Sala 1904 - Centro",
+      streetAddress: "R. Barão do Rio Branco, 63 - Salas 1904 e 1905 - Centro",
       addressLocality: "Curitiba",
       addressRegion: "PR",
       postalCode: "80010-180",

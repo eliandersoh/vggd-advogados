@@ -52,13 +52,13 @@ export function Hero() {
           </div>
           <div className="hm-cell reveal reveal-up">
             <span className="hm-label">Atendimento</span>
-            <span className="hm-val">On-line, com horário marcado</span>
+            <span className="hm-val">Presencial e on-line, com horário marcado</span>
           </div>
         </div>
       </div>
 
       <style>{`
-        .hero { padding: 128px 0 64px; position: relative; overflow: hidden; }
+        .hero { padding: 128px 0 36px; position: relative; overflow: hidden; }
         .h-hero { font-size: clamp(34px, 4.2vw, 58px); max-width: 19ch; line-height: 1.12; text-wrap: balance; }
 
         /* Split */
@@ -112,7 +112,7 @@ export function Hero() {
         .hero-meta {
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: 40px;
-          margin-top: 64px; padding-top: 28px;
+          margin-top: 48px; padding-top: 28px;
           border-top: 1px solid var(--line);
         }
         .hm-cell { display: flex; flex-direction: column; gap: 6px; }
@@ -126,11 +126,11 @@ export function Hero() {
         }
 
         @media (max-width: 900px) {
-          .hero { padding: 110px 0 40px; }
+          .hero { padding: 104px 0 28px; }
           .hero-split-grid { grid-template-columns: 1fr; gap: 48px; }
           .hero-col-main .h-hero { margin-bottom: 32px; }
           .hero-col-aside { padding-left: 0; border-left: none; border-top: 1px solid rgba(245, 240, 232, 0.18); padding-top: 32px; }
-          .hero-meta { grid-template-columns: 1fr; gap: 20px; }
+          .hero-meta { grid-template-columns: 1fr; gap: 16px; margin-top: 36px; }
         }
       `}</style>
     </section>
@@ -145,7 +145,6 @@ export function About() {
         <SectionHead
           eyebrow="O escritório"
           title="Soluções jurídicas com ética, técnica e proximidade."
-          intro="Preparado para oferecer soluções jurídicas especializadas, prestando serviços humanizados de forma comprometida, ética e transparente."
         />
 
         <div className="about-grid">
@@ -619,7 +618,7 @@ export function Contact() {
             <div className="eyebrow" style={{ color: "var(--gold-soft)" }}>Contato</div>
             <h2 className="display contact-title">Vamos conversar sobre o seu caso.</h2>
             <p className="contact-intro">
-              Manda uma mensagem rápida — ou chama direto no WhatsApp. Costumamos responder no mesmo dia útil.
+              Mande uma mensagem no WhatsApp.
             </p>
             <div className="hero-ctas">
               <a className="btn cf-submit" href={VGD.brand.whatsapp} target="_blank" rel="noopener noreferrer">
@@ -640,7 +639,7 @@ export function Contact() {
               </div>
               <div className="ci-row">
                 <div className="ci-label">Endereço</div>
-                <div className="ci-val">{VGD.brand.address}</div>
+                <a className="ci-val" href={VGD.brand.addressLink} target="_blank" rel="noopener noreferrer">{VGD.brand.address}</a>
               </div>
               <div className="ci-row">
                 <div className="ci-label">Horário</div>
@@ -704,8 +703,8 @@ export function Footer() {
             <div className="ft-label">Áreas</div>
             <ul>
               <li><a href="#areas">Família & Sucessões</a></li>
-              <li><a href="#areas">Previdenciário</a></li>
               <li><a href="#areas">Trabalhista</a></li>
+              <li><a href="#areas">Previdenciário</a></li>
               <li><a href="#areas">Cível & Médico</a></li>
             </ul>
           </div>
